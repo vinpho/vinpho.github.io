@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>旋转数组 | vinpho</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="算法,Leetcode,数组," />
+  
+
+  <meta name="description" content="题目给定一个数组，将数组中的元素向右移动 k 个位置，其中 k 是非负数。 示例1 输入: [1,2,3,4,5,6,7] 和 k = 3输出:  [5,6,7,1,2,3,4]解释:        向右旋转 1 步: [7,1,2,3,4,5,6]        向右旋转 2 步: [6,7,1,2,3,4,5]        向右旋转 3 步: [5,6,7,1,2,3,4]  示例2  输入">
+<meta name="keywords" content="算法,Leetcode,数组">
+<meta property="og:type" content="article">
+<meta property="og:title" content="旋转数组">
+<meta property="og:url" content="http://vinpho.github.io/2018/05/16/2018-05-16-旋转数组/index.html">
+<meta property="og:site_name" content="vinpho">
+<meta property="og:description" content="题目给定一个数组，将数组中的元素向右移动 k 个位置，其中 k 是非负数。 示例1 输入: [1,2,3,4,5,6,7] 和 k = 3输出:  [5,6,7,1,2,3,4]解释:        向右旋转 1 步: [7,1,2,3,4,5,6]        向右旋转 2 步: [6,7,1,2,3,4,5]        向右旋转 3 步: [5,6,7,1,2,3,4]  示例2  输入">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-16T12:35:26.182Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="旋转数组">
+<meta name="twitter:description" content="题目给定一个数组，将数组中的元素向右移动 k 个位置，其中 k 是非负数。 示例1 输入: [1,2,3,4,5,6,7] 和 k = 3输出:  [5,6,7,1,2,3,4]解释:        向右旋转 1 步: [7,1,2,3,4,5,6]        向右旋转 2 步: [6,7,1,2,3,4,5]        向右旋转 3 步: [5,6,7,1,2,3,4]  示例2  输入">
+
+  
+
+  
+    <link rel="icon" href="/assets/img/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbe6" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+
+
+  
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+  
+</head>
+
+<body>
+  
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">菜单</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">菜单</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            文章
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#题目"><span class="toc-text">题目</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#示例1"><span class="toc-text">示例1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#示例2"><span class="toc-text">示例2</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#说明"><span class="toc-text">说明</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第一种做法："><span class="toc-text">第一种做法：</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#关键代码"><span class="toc-text">关键代码</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第二种做法："><span class="toc-text">第二种做法：</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#关键代码-1"><span class="toc-text">关键代码</span></a></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-2018-05-16-旋转数组" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">旋转数组</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.05.16</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>vinpho</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>给定一个数组，将数组中的元素向右移动 k 个位置，其中 k 是非负数。</p>
+<h2 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h2><blockquote>
+<p><strong>输入</strong>: [1,2,3,4,5,6,7] 和 k = 3<br><strong>输出</strong>:  [5,6,7,1,2,3,4]<br><strong>解释</strong>:<br>        向右旋转 1 步: [7,1,2,3,4,5,6]<br>        向右旋转 2 步: [6,7,1,2,3,4,5]<br>        向右旋转 3 步: [5,6,7,1,2,3,4]</p>
+</blockquote>
+<h2 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h2><blockquote>
+<p><strong> 输入</strong>: [-1,-100,3,99] 和 k = 2<br><strong>输出</strong>: [3,99,-1,-100]<br><strong>解释</strong>:<br>        向右旋转 1 步: [99,-1,-100,3]<br>        向右旋转 2 步: [3,99,-1,-100]</p>
+</blockquote>
+<h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><pre><code>尽可能想出更多的解决方案，至少有三种不同的方法可以解决这个问题。
+要求使用空间复杂度为 O(1) 的原地算法。
+</code></pre><h1 id="第一种做法："><a href="#第一种做法：" class="headerlink" title="第一种做法："></a>第一种做法：</h1><p>将每个数组循环向右移动，最后的元素放在数组的第一位，然后K是多少就循环多少次。</p>
+<h2 id="关键代码"><a href="#关键代码" class="headerlink" title="关键代码"></a>关键代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rotate</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">		<span class="comment">//数组长度</span></span><br><span class="line">        <span class="keyword">int</span> len= nums.length;</span><br><span class="line">        <span class="keyword">while</span>(k&gt;<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">int</span> t=<span class="number">0</span>;</span><br><span class="line">			<span class="comment">//将数组最后一个元素赋给t</span></span><br><span class="line">            t=nums[len-<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=len-<span class="number">2</span>;i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">			<span class="comment">//向右移动一位</span></span><br><span class="line">                nums[i+<span class="number">1</span>]=nums[i];</span><br><span class="line">            &#125;</span><br><span class="line">			<span class="comment">//将最后一个元素赋给移动后数组的第一位</span></span><br><span class="line">            nums[<span class="number">0</span>]=t;</span><br><span class="line">			<span class="comment">//K作减，只有K!=0都会继续循环向右移动</span></span><br><span class="line">            k--;</span><br><span class="line">        &#125; </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="第二种做法："><a href="#第二种做法：" class="headerlink" title="第二种做法："></a>第二种做法：</h1><p>复制nums数组到一个新数组，然后利用取余的方法，将newArr的值赋给相应位置的nums数组。取余情况如下：<br>   ///3元素在数组中的2位置上，(2+3) % 7 = 5<br>   ///5元素在数组中的4位置上，(4+3) % 7 = 0<br>   ///6元素在数组中的5位置上，(5+3) % 7 = 1<br>   ///7元素在数组中的6位置上，(6+3) % 7 = 2  </p>
+<h2 id="关键代码-1"><a href="#关键代码-1" class="headerlink" title="关键代码"></a>关键代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rotate</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> len= nums.length;</span><br><span class="line">		<span class="comment">//定义新数组，并赋值</span></span><br><span class="line">        <span class="keyword">int</span>[] newArr=<span class="keyword">new</span> <span class="keyword">int</span>[len];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">            newArr[i]=nums[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">		<span class="comment">//取余，找出新位置，并赋值</span></span><br><span class="line">            <span class="keyword">int</span> position=(i+newk)%len;</span><br><span class="line">            nums[position]=newArr[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    
+  </div>
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持vinpho</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2018/05/16/2018-05-16-买卖股票的最佳时机II/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="hide pull-right" href="/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              文章
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+
+
+
+    
+
+    
+	
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+
+</body>
+</html>
