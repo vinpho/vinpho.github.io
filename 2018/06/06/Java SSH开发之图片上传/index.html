@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+
+
+  <html class="light page-post">
+
+
+<head>
+  <meta charset="utf-8">
+  
+  <title>Java SSH开发之图片上传 | vinpho</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Java,SSH," />
+  
+
+  <meta name="description" content="前言最近在用Java Web开发框架Struts2、Hibernate、Spring等技术开发一个在线网校平台。图片上传在这个项目多次用到，也想必以后也会用到。所以写一博文记录。 开发思路： 上传图片的思路就是复制本地的图片到服务器去，然后保存图片路径到数据库，没有太复杂的技术，都是常规的IO操作。  前端页面代码:123456&amp;lt;form  method=&quot;post&quot; action=&quot;upd">
+<meta name="keywords" content="Java,SSH">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java SSH开发之图片上传">
+<meta property="og:url" content="http://vinpho.github.io/2018/06/06/Java SSH开发之图片上传/index.html">
+<meta property="og:site_name" content="vinpho">
+<meta property="og:description" content="前言最近在用Java Web开发框架Struts2、Hibernate、Spring等技术开发一个在线网校平台。图片上传在这个项目多次用到，也想必以后也会用到。所以写一博文记录。 开发思路： 上传图片的思路就是复制本地的图片到服务器去，然后保存图片路径到数据库，没有太复杂的技术，都是常规的IO操作。  前端页面代码:123456&amp;lt;form  method=&quot;post&quot; action=&quot;upd">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-06-06T13:07:31.542Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java SSH开发之图片上传">
+<meta name="twitter:description" content="前言最近在用Java Web开发框架Struts2、Hibernate、Spring等技术开发一个在线网校平台。图片上传在这个项目多次用到，也想必以后也会用到。所以写一博文记录。 开发思路： 上传图片的思路就是复制本地的图片到服务器去，然后保存图片路径到数据库，没有太复杂的技术，都是常规的IO操作。  前端页面代码:123456&amp;lt;form  method=&quot;post&quot; action=&quot;upd">
+
+  
+
+  
+    <link rel="icon" href="/assets/img/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbe6" rel="stylesheet">
+
+
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
+
+  
+
+  
+
+  
+
+
+  
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+  
+</head>
+
+<body>
+  
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">菜单</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">菜单</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
+    </a>
+    <ul class="list-toolbox">
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            文章
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/category/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            分类
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            标签
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            关于
+          </a>
+        </li>
+      
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/search/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+
+
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#开发思路："><span class="toc-text">开发思路：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#前端页面代码"><span class="toc-text">前端页面代码:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Action中核心类处理的代码"><span class="toc-text">Action中核心类处理的代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#再看strtus-xml文件中配置的注意事项"><span class="toc-text">再看strtus.xml文件中配置的注意事项</span></a></li></ol></li></ol></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-Java SSH开发之图片上传" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Java SSH开发之图片上传</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2018.06.06</span>
+      </span>
+
+      
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>vinpho</span>
+        </span>
+      
+
+      
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </span>
+
+
+
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近在用Java Web开发框架Struts2、Hibernate、Spring等技术开发一个在线网校平台。图片上传在这个项目多次用到，也想必以后也会用到。所以写一博文记录。</p>
+<h2 id="开发思路："><a href="#开发思路：" class="headerlink" title="开发思路："></a>开发思路：</h2><blockquote>
+<p>上传图片的思路就是复制本地的图片到服务器去，然后保存图片路径到数据库，没有太复杂的技术，都是常规的IO操作。</p>
+</blockquote>
+<h3 id="前端页面代码"><a href="#前端页面代码" class="headerlink" title="前端页面代码:"></a>前端页面代码:</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span>  <span class="attr">method</span>=<span class="string">"post"</span> <span class="attr">action</span>=<span class="string">"updateInfo"</span> <span class="attr">enctype</span>=<span class="string">"multipart/form-data"</span>&gt;</span> </span><br><span class="line"><span class="comment">&lt;!--默认是上传文本文件，加入的 multipart/form-data是将文件以二进制的形式上传，这样可以实现多种类型的文件上传--&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span>  <span class="attr">name</span>=<span class="string">"upload"</span>  /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="Action中核心类处理的代码"><a href="#Action中核心类处理的代码" class="headerlink" title="Action中核心类处理的代码"></a>Action中核心类处理的代码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">updateInfoAction</span> <span class="keyword">extends</span> <span class="title">ActionSupport</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BUFFER_SIZE=<span class="number">40</span>*<span class="number">40</span>;</span><br><span class="line">  <span class="keyword">private</span> File upload; <span class="comment">//文件对象</span></span><br><span class="line">  <span class="keyword">private</span> String uploadFileName;<span class="comment">//上传文件名</span></span><br><span class="line">  <span class="keyword">private</span> String uploadContentType; <span class="comment">//上传文件类型</span></span><br><span class="line">  <span class="keyword">private</span> String savePath; <span class="comment">//在struts.xml中param配置的文件路径</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">//省略上面的get/set的方法</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">//将本地文件复制到Tomcat服务器上</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">copyFile</span><span class="params">(File source,File target)</span></span>&#123;</span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">      <span class="comment">//创建输入流和输出流的对象</span></span><br><span class="line">      FileInputStream fis=<span class="keyword">new</span> FileInputStream(source);</span><br><span class="line">      DataInputStream dis=<span class="keyword">new</span> DataInputStream(fis);</span><br><span class="line">      </span><br><span class="line">      FileOutputStream fos=<span class="keyword">new</span> FileOutputStream(target);</span><br><span class="line">      DataOutputStream dos=<span class="keyword">new</span> DataOutputStream(fos);</span><br><span class="line">      <span class="keyword">int</span> temp;</span><br><span class="line">      <span class="comment">//复制</span></span><br><span class="line">      <span class="keyword">while</span>((temp=dis.read())!=-<span class="number">1</span>)&#123;</span><br><span class="line">        <span class="comment">//写入文件</span></span><br><span class="line">        dos.write(temp);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//关闭</span></span><br><span class="line">      fis.close();</span><br><span class="line">      dis.close();</span><br><span class="line">      fos.close();</span><br><span class="line">      dos.close();</span><br><span class="line">      </span><br><span class="line">    &#125;<span class="keyword">catch</span>(FileNotFoundException ex1)&#123;</span><br><span class="line">      ex1.printStackTrace();</span><br><span class="line">    &#125;<span class="keyword">catch</span>(IOException ex2)&#123;</span><br><span class="line">      ex2.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">execute</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(getUploadFileName()!=<span class="keyword">null</span>)&#123; <span class="comment">//此作为为项目需求（在不更换图片时，可避免出错）</span></span><br><span class="line">      <span class="comment">//获取上传文件的文件类型</span></span><br><span class="line">      String fileType = getUploadFileName().substring(getUploadFileName().lastIndexOf(<span class="string">"."</span>));</span><br><span class="line">      <span class="comment">//以下作用是统一采用命名方式，为日期.图片类型</span></span><br><span class="line">      SimpleDateFormat sdf = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyyMMdd"</span>);</span><br><span class="line">      Date dt = <span class="keyword">new</span> Date();</span><br><span class="line">      Random rd = <span class="keyword">new</span> Random();</span><br><span class="line">      setUploadFileName(sdf.format(dt) + rd.nextInt(<span class="number">9999</span>) + fileType);</span><br><span class="line">      <span class="keyword">try</span>&#123;</span><br><span class="line">        FileInputStream fis = <span class="keyword">new</span> FileInputStream(getUpload());</span><br><span class="line">        <span class="comment">//复制到目标目录</span></span><br><span class="line">        String target=ServletActionContext.getServletContext().getRealPath(getSavePath());</span><br><span class="line">        FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(target + <span class="string">"/"</span>+ getUploadFileName());</span><br><span class="line">        <span class="keyword">byte</span>[] buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">10240</span>];</span><br><span class="line">        <span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> ((len = fis.read(buffer)) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">          fos.write(buffer, <span class="number">0</span>, len);</span><br><span class="line">        &#125;</span><br><span class="line">        fos.close();</span><br><span class="line">        fis.close();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//upload为保存图片的文件夹</span></span><br><span class="line">        String filePath = <span class="string">"upload/"</span> + getUploadFileName();</span><br><span class="line">        user.setHeader_img(filePath);  <span class="comment">//项目中更新用户的图片属性</span></span><br><span class="line">      &#125;<span class="keyword">catch</span>(IOException e)&#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">      &#125; </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(ud.updateInfo(user))&#123;  <span class="comment">//更新对前的对象，此为项目中修改用户信息所用</span></span><br><span class="line">      <span class="keyword">return</span> SUCCESS;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> INPUT;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="再看strtus-xml文件中配置的注意事项"><a href="#再看strtus-xml文件中配置的注意事项" class="headerlink" title="再看strtus.xml文件中配置的注意事项"></a>再看strtus.xml文件中配置的注意事项</h3><p>基本的配置文件，需要加上保存的目录名<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">action</span> <span class="attr">name</span>=<span class="string">"updateInfo"</span> <span class="attr">class</span>=<span class="string">"com.oc.action.updateInfoAction"</span> &gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">"savePath"</span> &gt;</span>\upload<span class="tag">&lt;/<span class="name">param</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">result</span> <span class="attr">name</span>=<span class="string">"success"</span>&gt;</span>/user/info.jsp<span class="tag">&lt;/<span class="name">result</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">result</span> <span class="attr">name</span>=<span class="string">"input"</span>&gt;</span>/user/home.jsp<span class="tag">&lt;/<span class="name">result</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">action</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>为避免文件过大的限制，还需要加上：<br> <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">constant</span> <span class="attr">name</span>=<span class="string">"struts.multipart.maxSize"</span> <span class="attr">value</span>=<span class="string">"100000000"</span>/&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>若还报异常或上传失败，可建一个struts.properties文件，里面加上：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">struts.multipart.saveDir =/tmp</span><br></pre></td></tr></table></figure></p>
+
+    
+  </div>
+</article>
+
+
+   
+  <div class="text-center donation">
+    <div class="inner-donation">
+      <span class="btn-donation">支持一下</span>
+      <div class="donation-body">
+        <div class="tip text-center">扫一扫，支持vinpho</div>
+        <ul class="theme.donation.items.length">
+        
+          <li class="item">
+            <img src="/images/qr-wechat.png" alt="">
+          </li>
+        
+          <li class="item">
+            <img src="/images/qr-alipay.png" alt="">
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2018/05/22/2018-05-22-两个数组的交集II/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="hide pull-right" href="/">
+        <i class="icon icon-angle-right"></i>
+    </a>
+  </div>
+
+
+
+
+</div>
+
+
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
+  </a>
+
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              文章
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/category/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              关于
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/search/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              搜索
+            </a>
+          </li>
+        
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+
+
+  
+      <div class="fexo-comments comments-post">
+    
+
+    
+
+
+
+
+    
+
+    
+	
+  </div>
+
+  
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
+
+
+</body>
+</html>
